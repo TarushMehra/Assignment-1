@@ -1,0 +1,632 @@
+
+/*-----------Tarush Mehra
+-------22BCS12837-----------*/
+
+1. Remove duplicates from a sorted array
+
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int i=0;
+        for(int j=1;j<nums.length;j++){
+            if(nums[j]!=nums[i]){
+                i++;
+                nums[i]=nums[j];
+            }
+        }
+        return i+1;
+        
+    }
+}
+
+2.      Implementing insertion sort
+class Solution {
+    // Please change the array in-place
+    public void insertionSort(int arr[]) {
+        int n=arr.length;
+        for(int i=1;i<n;i++){
+            int key=arr[i];
+            int j=i-1;
+            while(j>=0 && arr[j]>key){
+                arr[j+1]=arr[j];
+                j=j-1;
+            }
+            arr[j+1]=key;
+        }
+        
+        
+        // code here
+    }
+}
+
+
+3.      Contains duplicate
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        int n=nums.length;
+        Arrays.sort(nums);
+        int i=0;
+        for(int j=1;j<n;j++){
+            if(nums[j]!=nums[i]){
+                i++;
+                nums[i]=nums[j];
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
+        
+    }
+}
+
+
+4.      Two Sum
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int n=nums.length;
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            int diff=target-nums[i];
+            if(map.containsKey(diff)){
+                return new int[] {map.get(diff),i};
+            }
+            map.put(nums[i],i);
+
+
+            
+        }
+        return new int[] {};
+        
+    }
+}
+
+5.      Jump Game
+class Solution {
+    public boolean canJump(int[] nums) {
+        int n=nums.length;
+        int goal=n-1;
+        for(int i=n-2;i>=0;i--){
+            if(i+nums[i]>=goal){
+                goal=i;
+
+            }
+        }
+        if(goal==0) return true;
+        else return false;
+        
+        
+    }
+}
+
+6.      Majority Element
+class Solution {
+    public int majorityElement(int[] nums) {
+        int n=nums.length;
+        int ans=0;
+        for(int i=0;i<n;i++){
+            ans |=nums[i];
+        }
+        return ans;
+    }
+}
+
+
+7.      Valid Palindrom
+class Solution {
+    public static String remove(String s){
+        return s.replaceAll("[^a-zA-Z0-9]" , "").toLowerCase();
+
+    }
+    public boolean isPalindrome(String s) {
+        s=remove(s);
+        int start=0;
+        int end=s.length()-1;
+        while(start<end){
+            if(s.charAt(start)!= s.charAt(end)){
+                return false;
+            }
+            start++;
+            end--;
+        }
+       return true;
+    }
+}
+
+8.      Jump Game 2
+class Solution {
+    public int jump(int[] nums) {
+        int n=nums.length;
+        if(n==1) return 0;
+        int reached=0;
+        int farthest=0;
+        int jumps=0;
+       for(int i=0;i<n-1;i++){
+        farthest=Math.max(farthest,i+nums[i]);
+        if(reached==i){
+            jumps++;
+            reached=farthest;
+        }
+        if(reached>=n-1){
+            break;
+        }
+
+        } 
+       return jumps;
+    }
+}
+
+9.    3Sum
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<>();
+        int n=nums.length;
+        if(n==0||n<3){
+            return ans;
+        }
+        Arrays.sort(nums);
+        for(int i=0;i<n-1;i++){
+            if(i>0&&nums[i]==nums[i-1]) continue;
+            int left=i+1;
+            int right=n-1;
+            while(left<right){
+                int sum=nums[i]+nums[left]+nums[right];
+                ArrayList<Integer> result=new ArrayList<>();
+            if(sum==0){
+                ans.add(Arrays.asList(nums[i],nums[left],nums[right]));
+                left++;
+                right--;
+                while(left<right&& nums[left]==nums[left-1]) left++;
+                while(left<right && nums[right]==nums[right+1]) right--;
+                
+            }
+            if(sum<0){
+                left++;
+            }
+            else if(sum>0){
+                right--;
+            }
+            
+
+            
+            
+        }
+        }
+        return ans;
+        
+    }
+}
+
+10.  Set Matrix zeroes
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int col1=1;
+        int n=matrix.length;
+        int m=matrix[0].length;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]==0){
+                    matrix[i][0]=0;
+                    if(j!=0){
+                        matrix[0][j]=0;
+                    }
+                    else{
+                        col1=0;
+                    }
+                }
+            }
+
+        }
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(matrix[i][j]!=0){
+                    if(matrix[i][0]==0||matrix[0][j]==0){
+                        matrix[i][j]=0;
+                    }
+                }
+
+            }
+        }
+        if(matrix[0][0]==0){
+            for(int j=0;j<m;j++){
+                matrix[0][j]=0;
+            }
+        }
+        if(col1==0){
+            for(int i=0;i<n;i++){
+                matrix[i][0]=0;
+            }
+        }   
+    }
+}
+
+11.  Longest substring withput repeating characters
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int max=0;
+        int left=0;
+        Map<Character, Integer> lastseen=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char c=s.charAt(i);
+            if(lastseen.containsKey(c) && lastseen.get(c)>=left){
+                left=lastseen.get(c)+1;
+            }
+            max=Math.max(max, i-left+1);
+            lastseen.put(c,i);
+        }
+        
+        return max;
+    }
+}
+
+
+12.  Finding duplicate number
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int n=nums.length;
+        int slow=nums[0];
+        int fast=nums[0];
+        while(true){
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+            if(slow==fast){
+                break;
+            }
+        }
+        fast=nums[0];
+        while(fast!=slow){
+            slow=nums[slow];
+            fast=nums[fast];
+        }
+        return slow;
+    }
+}
+
+
+13.  Print linked list
+class Solution {
+    // Function to display the elements of a linked list in same line
+    void printList(Node head) {
+        Node ans=head;
+        while(ans!=null){
+            System.out.print(ans.data+" ");
+            ans=ans.next;
+        }
+        // add code here.
+    }
+}
+
+14.  Remove duplicates from a sorted list
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode current=head;
+        while(current !=null && current.next!=null){
+            if(current.val==current.next.val){
+                current.next=current.next.next;
+            }
+            else{
+            current=current.next;
+            }
+        }
+        return head;
+    }
+}
+
+15.  Reverse a linked list
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode current=head;
+        ListNode next=null;
+        ListNode prev=null;
+        while(current!=null){
+            next=current.next;
+            current.next=prev;
+            prev=current;
+            current=next;
+        }
+        return prev;
+        
+    }
+}
+
+16.  Delete middle node of a list
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if(head==null || head.next==null){
+            return null;
+        }
+        ListNode one=head;
+        ListNode two=head;
+        ListNode prev=null;
+        while(two!=null && two.next!=null){
+            prev=one;
+            two=two.next.next;
+            
+            one=one.next;
+           
+        }
+        prev.next=one.next;
+        return head;
+        
+    }
+}
+
+
+17.  Merge two sorted linked lists
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode result=new ListNode(0);
+        ListNode current=result;
+        while(list1!=null && list2!=null){
+            if(list1.val<list2.val){
+              current.next=list1;
+                list1=list1.next;
+            }
+            else {
+                current.next=list2;
+            list2=list2.next;
+            }
+            current=current.next;
+        }
+        if(list1!=null) current.next=list1;
+        if(list2!=null) current.next=list2;
+        return result.next;
+        
+    }
+}
+
+18.  Remove duplicates from sorted lists 2
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode current=head;
+        ListNode prev=null;
+        while(current !=null && current.next!=null){
+            prev=current;
+            if(current.val==current.next.val){
+                prev.next=current.next.next;
+            }
+            else{
+                current=current.next;
+            }
+        }
+        return head;
+        
+    }
+}
+
+19.  Detect a cycle in a linked list
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode fast=head;
+        ListNode slow=head;
+        while(fast!=null && fast.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+            if(fast==slow){
+                return true;
+            }
+        }
+        return false;
+        
+    }
+}
+
+20.  Reverse linked list 2
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if(head==null||head.next==null||right-left==0){
+            return head;
+        }
+        ListNode dummy=new ListNode(0);
+        ListNode prev=dummy;
+        dummy.next=head;
+    for(int i=0;i<left-1;i++){
+        prev=prev.next;
+    }
+    ListNode current=prev.next;
+    ListNode newNode=null;
+    for(int j=0;j<right-left;j++){
+        newNode=current.next;
+        current.next=newNode.next;
+        newNode.next=prev.next;
+        prev.next=newNode;
+    }
+    return dummy.next;
+        
+    }
+}
+
+21.  rotate a list
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head==null||head.next==null||k==0){
+            return head;
+        }
+        ListNode tail=head;
+        ListNode current=head;
+        int count=1;
+        while(tail.next!=null){
+            count++;
+            tail=tail.next;
+        }
+        tail.next=head;
+        k=k%count;
+        int skip=count-k-1;
+        for(int i=0;i<skip;i++){
+            current=current.next;
+        }
+        ListNode newNode=current.next;
+        current.next=null;
+      return newNode;        
+    }
+}
+
+22.  Merge k sorted lists
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2){
+        if(l1==null) return l2;
+        if(l2 == null) return l1;
+        if(l1.val<l2.val){
+            l1.next=mergeTwoLists(l1.next,l2);
+            return l1;
+        }
+        else{
+            l2.next=mergeTwoLists(l2.next,l1);
+            return l2;
+        }
+        
+
+    }
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length==0) return null;
+        return divideAndConquer(lists,0,lists.length-1);
+
+        
+    }
+    private ListNode divideAndConquer(ListNode[] lists, int left, int right){
+        if(left==right) return lists[left];
+        int mid=left+(right-left)/2;
+        ListNode l1=divideAndConquer(lists,left,mid);
+        ListNode l2=divideAndConquer(lists,mid+1,right);
+        return mergeTwoLists(l1,l2);
+    }
+}
+
+23.  Sort List
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode slow=head;
+        ListNode fast=head.next;
+
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        ListNode mid=slow.next;
+        slow.next=null;
+        ListNode left=sortList(head);
+        ListNode right=sortList(mid);
+        return merge(left,right);
+        
+    }
+    private ListNode merge(ListNode l1,ListNode l2){
+        ListNode dummy=new ListNode(0);
+        ListNode tail=dummy;
+        while(l1!=null && l2!=null){
+            if(l1.val<l2.val){
+                tail.next=l1;
+                l1=l1.next;
+            }
+            else{
+                tail.next=l2;
+                l2=l2.next;
+            }
+            tail=tail.next;
+        }
+        tail.next=(l1!=null)?l1:l2;
+        return dummy.next;
+    }
+}
